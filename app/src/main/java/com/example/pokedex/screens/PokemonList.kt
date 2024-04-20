@@ -1,6 +1,7 @@
 package com.example.pokedex.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -36,17 +37,20 @@ import com.example.pokedex.ui.theme.White
 
 @Composable
 fun PokemonListRoute(
+    onPokemonClick: () -> Unit,
     viewModel: PokemonListViewModel = hiltViewModel()
 ) {
     val pokemonList by viewModel.pokemonList.collectAsState() // TODO: with lifecycle
     PokemonListScreen(
-        pokemonList = pokemonList
+        pokemonList = pokemonList,
+        onPokemonClick = onPokemonClick
     )
 }
 
 @Composable
 fun PokemonListScreen(
     pokemonList: PokemonListResponse?,
+    onPokemonClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -63,7 +67,8 @@ fun PokemonListScreen(
                 items(pokemonList.results) { pokemon ->
                     PokemonItem(
                         name = pokemon.name,
-                        number = pokemon.getPokemonNumber() ?: 0
+                        number = pokemon.getPokemonNumber() ?: 0,
+                        onClick = onPokemonClick,
                     )
                     Spacer(modifier = Modifier.size(10.dp))
                 }
@@ -78,6 +83,7 @@ fun PokemonListScreen(
 fun PokemonItem(
     name: String,
     number: Int,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     ElevatedCard(
@@ -87,6 +93,7 @@ fun PokemonItem(
         shape = RoundedCornerShape(4.dp),
         modifier = modifier
             .fillMaxWidth()
+            .clickable { onClick() }
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically
@@ -128,7 +135,8 @@ fun PokemonItemPreview() {
     PokeDexTheme {
         PokemonItem(
             name = "Pikachu",
-            number = 987
+            number = 987,
+            onClick = {},
         )
     }
 }

@@ -1,7 +1,20 @@
 package com.example.pokedex
 
-import android.app.Application
-import dagger.hilt.android.HiltAndroidApp
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
 
-@HiltAndroidApp
-class PokeDexApp : Application()
+@Composable
+fun PokeDexApp(
+    navHostController: NavHostController,
+) {
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = MaterialTheme.colorScheme.background
+    ) {
+        PokeDexNavHost(navHostController)
+    }
+}
