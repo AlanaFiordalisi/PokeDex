@@ -16,14 +16,14 @@ fun PokeDexNavHost(
             route = "pokemon_list"
         ) {
             PokemonListRoute(
-                onPokemonClick = {
-                    navHostController.navigate("pokemon_detail")
+                onPokemonClick = { name ->
+                    navHostController.navigate("pokemon_detail/$name")
                 }
             )
         }
 
         composable(
-            route = "pokemon_detail"
+            route = "pokemon_detail/{name}"
         ) {
             PokemonDetailRoute()
         }

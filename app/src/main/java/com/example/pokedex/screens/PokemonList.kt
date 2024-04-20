@@ -15,8 +15,6 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Text
@@ -37,7 +35,7 @@ import com.example.pokedex.ui.theme.White
 
 @Composable
 fun PokemonListRoute(
-    onPokemonClick: () -> Unit,
+    onPokemonClick: (String) -> Unit,
     viewModel: PokemonListViewModel = hiltViewModel()
 ) {
     val pokemonList by viewModel.pokemonList.collectAsState() // TODO: with lifecycle
@@ -50,7 +48,7 @@ fun PokemonListRoute(
 @Composable
 fun PokemonListScreen(
     pokemonList: PokemonListResponse?,
-    onPokemonClick: () -> Unit,
+    onPokemonClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -68,7 +66,7 @@ fun PokemonListScreen(
                     PokemonItem(
                         name = pokemon.name,
                         number = pokemon.getPokemonNumber() ?: 0,
-                        onClick = onPokemonClick,
+                        onClick = { onPokemonClick(pokemon.name) },
                     )
                     Spacer(modifier = Modifier.size(10.dp))
                 }
