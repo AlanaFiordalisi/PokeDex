@@ -27,6 +27,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.pokedex.common.ErrorIndicator
+import com.example.pokedex.common.LoadingIndicator
 import com.example.pokedex.network.model.PokemonListResponse
 import com.example.pokedex.network.model.getPokemonNumber
 import com.example.pokedex.ui.theme.LightGrey
@@ -38,16 +40,16 @@ fun PokemonListRoute(
     onPokemonClick: (String) -> Unit,
     viewModel: PokemonListViewModel = hiltViewModel()
 ) {
-    val pokemonList by viewModel.pokemonList.collectAsState() // TODO: with lifecycle
+    val listState by viewModel.listState.collectAsState() // TODO: with lifecycle
     PokemonListScreen(
-        pokemonList = pokemonList,
+        listState = listState,
         onPokemonClick = onPokemonClick
     )
 }
 
 @Composable
 fun PokemonListScreen(
-    pokemonList: PokemonListResponse?,
+    listState: PokemonListState,
     onPokemonClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -56,23 +58,33 @@ fun PokemonListScreen(
             .fillMaxSize()
             .background(White)
     ) {
-        Text("Pokemon List")
-        if (pokemonList != null) {
-            LazyColumn(
-                modifier = Modifier
-                    .padding(horizontal = 10.dp)
-            ) {
-                items(pokemonList.results) { pokemon ->
-                    PokemonItem(
-                        name = pokemon.name,
-                        number = pokemon.getPokemonNumber() ?: 0,
-                        onClick = { onPokemonClick(pokemon.name) },
-                    )
-                    Spacer(modifier = Modifier.size(10.dp))
-                }
-            }
-        } else {
-            Text("Uh oh! No Pokemon :(")
+        when (listState) {
+            PokemonListState.Loading -> LoadingIndicator()
+            PokemonListState.Error -> ErrorIndicator()
+            is PokemonListState.Loaded -> ListContent(
+                pokemonList = listState.list,
+                onPokemonClick = onPokemonClick
+            )
+        }
+    }
+}
+
+@Composable
+private fun ListContent(
+    pokemonList: PokemonListResponse,
+    onPokemonClick: (String) -> Unit
+) {
+    LazyColumn(
+        modifier = Modifier
+            .padding(horizontal = 10.dp)
+    ) {
+        items(pokemonList.results) { pokemon ->
+            PokemonItem(
+                name = pokemon.name,
+                number = pokemon.getPokemonNumber() ?: 0,
+                onClick = { onPokemonClick(pokemon.name) },
+            )
+            Spacer(modifier = Modifier.size(10.dp))
         }
     }
 }
@@ -138,4 +150,3 @@ fun PokemonItemPreview() {
         )
     }
 }
-
