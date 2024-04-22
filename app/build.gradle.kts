@@ -71,7 +71,6 @@ dependencies {
 
     // Hilt
     implementation("com.google.dagger:hilt-android:2.48")
-//    implementation("com.google.dagger:hilt-compiler:2.44")
     kapt("com.google.dagger:hilt-android-compiler:2.48")
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 
@@ -88,6 +87,8 @@ dependencies {
     implementation("com.github.skydoves:sandwich:2.0.6")
     implementation("com.github.skydoves:sandwich-retrofit:2.0.6") // For Retrofit
 
+    // Coil
+    implementation("io.coil-kt:coil-compose:2.6.0")
 }
 
 // Allow references to generated code

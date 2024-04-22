@@ -1,6 +1,5 @@
 package com.example.pokedex.screens
 
-import androidx.compose.runtime.MutableState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.pokedex.network.model.PokemonListResponse
