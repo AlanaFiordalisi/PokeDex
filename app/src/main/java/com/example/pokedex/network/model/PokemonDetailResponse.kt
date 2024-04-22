@@ -2,7 +2,6 @@ package com.example.pokedex.network.model
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import kotlin.reflect.full.memberProperties
 
 @JsonClass(generateAdapter = true)
 data class PokemonDetailResponse(
@@ -10,7 +9,8 @@ data class PokemonDetailResponse(
     val name: String,
     val height: Int,
     val weight: Int,
-    val sprites: PokemonSpritesResponse
+    val sprites: PokemonSpritesResponse,
+    val types: List<PokemonTypeResponse>
 )
 
 @JsonClass(generateAdapter = true)
@@ -45,15 +45,26 @@ fun PokemonSpritesResponse.getMap(): Map<String, String> {
     backShinyFemale?.let { map.put("back shiny female", it) }
 
     return map
-//    for ((key, value) in this) {
-//
-//    }
-//    for (property in PokemonSpritesResponse::class.memberProperties) {
-//        this.
-//        property.name
-//        if (property is String) {
-//
-//        }
-//    }
-//    return map
+}
+
+@JsonClass(generateAdapter = true)
+data class PokemonTypeResponse(
+    val slot: Int,
+    val type: PokemonType
+)
+
+@JsonClass(generateAdapter = true)
+data class PokemonType(
+    val name: String
+)
+
+fun List<PokemonTypeResponse>.toJoinedString(): String {
+    var string = ""
+    this.forEachIndexed { index, pokemonType ->
+        string += pokemonType.type.name
+        if (index < this.size - 1) {
+            string += ", "
+        }
+    }
+    return string
 }
