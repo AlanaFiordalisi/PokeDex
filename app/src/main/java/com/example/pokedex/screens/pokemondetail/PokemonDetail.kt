@@ -26,6 +26,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -34,6 +36,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.example.pokedex.R
 import com.example.pokedex.common.ErrorIndicator
 import com.example.pokedex.common.LoadingIndicator
 import com.example.pokedex.network.model.PokemonDetailResponse
@@ -85,8 +88,8 @@ fun DetailContent(
                 HorizontalPager(
                     state = pagerState,
                 ) { page ->
-                    val imageName = spritesMap.keys.elementAt(page)
-                    val imageUrl = spritesMap.values.elementAt(page)
+                    val spriteName = spritesMap.keys.elementAt(page)
+                    val spriteUrl = spritesMap.values.elementAt(page)
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -94,9 +97,9 @@ fun DetailContent(
                     ) {
                         AsyncImage(
                             model = ImageRequest.Builder(LocalContext.current)
-                                .data(imageUrl)
+                                .data(spriteUrl)
                                 .build(),
-                            contentDescription = null,
+                            contentDescription = stringResource(id = spriteName),
                             contentScale = ContentScale.FillHeight,
                             modifier = Modifier
                                 .fillMaxHeight()
@@ -110,7 +113,7 @@ fun DetailContent(
                                 .align(Alignment.BottomEnd)
                         ) {
                             Text(
-                                text = imageName,
+                                text = stringResource(id = spriteName),
                                 color = White,
                                 modifier = Modifier
                                     .padding(horizontal = 2.dp)
@@ -132,16 +135,16 @@ fun DetailContent(
                     .height(IntrinsicSize.Min)
             ) {
                 StatsBlock(
-                    label = "ID",
-                    stat = "#$id",
+                    label = stringResource(id = R.string.label_id),
+                    stat = stringResource(id = R.string.body_pound_x, id),
                     modifier = Modifier.weight(1f)
                 )
                 Spacer(modifier = Modifier.size(8.dp))
                 StatsBlock(
-                    label = "Weight",
+                    label = stringResource(id = R.string.label_weight),
                     stat = weight.toString(),
                     modifier = Modifier.weight(1f),
-                    unit = "hectograms"
+                    unit = stringResource(id = R.string.body_hectograms)
                 )
             }
             Spacer(modifier = Modifier.size(8.dp))
@@ -150,16 +153,19 @@ fun DetailContent(
                     .height(IntrinsicSize.Min)
             ) {
                 StatsBlock(
-                    label = if (types.size == 1) "Type" else "Types",
+                    label = pluralStringResource(
+                        id = R.plurals.body_types,
+                        count = types.size
+                    ),
                     stat = types.toJoinedString(),
                     modifier = Modifier.weight(1f)
                 )
                 Spacer(modifier = Modifier.size(8.dp))
                 StatsBlock(
-                    label = "Height",
+                    label = stringResource(id = R.string.label_height),
                     stat = height.toString(),
                     modifier = Modifier.weight(1f),
-                    unit = "decimeters"
+                    unit = stringResource(id = R.string.body_decimeters)
                 )
             }
         }

@@ -1,3 +1,25 @@
 <resources>
     <string name="app_name">PokeDex</string>
+    <string name="body_loading_failure">Uh oh! This information failed to load.</string>
+    <string name="cd_loading">loading</string>
+    <!-- Pokemon List -->
+    <string name="label_front_default">front default</string>
+    <string name="label_front_shiny">front shiny</string>
+    <string name="label_front_female">front female</string>
+    <string name="label_front_shiny_female">front shiny female</string>
+    <string name="label_back_default">back default</string>
+    <string name="label_back_shiny">back shiny</string>
+    <string name="label_back_female">back female</string>
+    <string name="label_back_shiny_female">back shiny female</string>
+    <!-- Pokemon Detail -->
+    <string name="label_id">ID</string>
+    <string name="body_pound_x">#%1$s</string>
+    <string name="label_weight">Weight</string>
+    <string name="body_hectograms">hectograms</string>
+    <string name="label_height">Height</string>
+    <string name="body_decimeters">decimeters</string>
+    <plurals name="body_types">
+        <item quantity="one">Type</item>
+        <item quantity="other">Types</item>
+    </plurals>
 </resources>

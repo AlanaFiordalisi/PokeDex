@@ -1,5 +1,6 @@
 package com.example.pokedex.network.model
 
+import com.example.pokedex.R
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
@@ -33,16 +34,16 @@ data class PokemonSpritesResponse(
     val backShinyFemale: String? = null,
 )
 
-fun PokemonSpritesResponse.getMap(): Map<String, String> {
-    val map = mutableMapOf<String, String>()
-    frontDefault?.let { map.put("front default", it) }
-    frontShiny?.let { map.put("front shiny", it) }
-    frontFemale?.let { map.put("front female", it) }
-    frontShinyFemale?.let { map.put("front shiny female", it) }
-    backDefault?.let { map.put("back default", it) }
-    backShiny?.let { map.put("back shiny", it) }
-    backFemale?.let { map.put("back female", it) }
-    backShinyFemale?.let { map.put("back shiny female", it) }
+fun PokemonSpritesResponse.getMap(): Map<Int, String> {
+    val map = mutableMapOf<Int, String>()
+    frontDefault?.let { map.put(R.string.label_front_default, it) }
+    frontShiny?.let { map.put(R.string.label_front_shiny, it) }
+    frontFemale?.let { map.put(R.string.label_front_female, it) }
+    frontShinyFemale?.let { map.put(R.string.label_front_shiny_female, it) }
+    backDefault?.let { map.put(R.string.label_back_default, it) }
+    backShiny?.let { map.put(R.string.label_back_shiny, it) }
+    backFemale?.let { map.put(R.string.label_back_female, it) }
+    backShinyFemale?.let { map.put(R.string.label_back_shiny_female, it) }
 
     return map
 }
