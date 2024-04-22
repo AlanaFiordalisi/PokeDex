@@ -10,9 +10,9 @@ class PokemonRepositoryImpl @Inject constructor(
     private val pokemonService: PokeApiService
 ) : PokemonRepository {
 
-    override suspend fun getPokemonList(): PokemonListResponse? {
+    override suspend fun getPokemonList(limit: Int): PokemonListResponse? {
         var response: PokemonListResponse? = null
-        pokemonService.getPokemonList().onSuccess {
+        pokemonService.getPokemonList(limit).onSuccess {
             response = this.data
         }
         return response

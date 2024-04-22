@@ -18,3 +18,9 @@ fun PokemonListResult.getPokemonNumber(): Int? {
 
     return regex.find(this.url)?.value?.trim('/')?.toInt()
 }
+
+fun PokemonListResult.getPokemonSpriteUrl(): String {
+    return "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" +
+            this.getPokemonNumber() +
+            ".png"
+}

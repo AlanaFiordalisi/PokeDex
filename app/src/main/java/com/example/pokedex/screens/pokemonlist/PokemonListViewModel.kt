@@ -2,7 +2,6 @@ package com.example.pokedex.screens.pokemonlist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.pokedex.network.model.PokemonListResponse
 import com.example.pokedex.repository.PokemonRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

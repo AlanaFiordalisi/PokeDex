@@ -5,11 +5,14 @@ import com.example.pokedex.network.model.PokemonListResponse
 import com.skydoves.sandwich.ApiResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface PokeApiService {
 
     @GET("pokemon")
-    suspend fun getPokemonList() : ApiResponse<PokemonListResponse>
+    suspend fun getPokemonList(
+        @Query("limit") limit: Int
+    ) : ApiResponse<PokemonListResponse>
 
     @GET("pokemon/{name}")
     suspend fun getPokemonDetail(

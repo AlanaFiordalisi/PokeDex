@@ -24,13 +24,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.example.pokedex.common.ErrorIndicator
 import com.example.pokedex.common.LoadingIndicator
 import com.example.pokedex.network.model.PokemonListResponse
 import com.example.pokedex.network.model.getPokemonNumber
+import com.example.pokedex.network.model.getPokemonSpriteUrl
 import com.example.pokedex.ui.theme.LightGrey
 import com.example.pokedex.ui.theme.PokeDexTheme
 import com.example.pokedex.ui.theme.White
@@ -82,6 +86,7 @@ private fun ListContent(
             PokemonItem(
                 name = pokemon.name,
                 number = pokemon.getPokemonNumber() ?: 0,
+                imageUrl = pokemon.getPokemonSpriteUrl(),
                 onClick = { onPokemonClick(pokemon.name) },
             )
             Spacer(modifier = Modifier.size(10.dp))
@@ -93,6 +98,7 @@ private fun ListContent(
 fun PokemonItem(
     name: String,
     number: Int,
+    imageUrl: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -108,10 +114,13 @@ fun PokemonItem(
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Box(
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(imageUrl)
+                    .build(),
+                contentDescription = null,
                 modifier = Modifier
                     .size(48.dp)
-                    .background(LightGrey)
             )
             Row(
                 modifier = Modifier
@@ -147,6 +156,7 @@ fun PokemonItemPreview() {
             name = "Pikachu",
             number = 987,
             onClick = {},
+            imageUrl = ""
         )
     }
 }
