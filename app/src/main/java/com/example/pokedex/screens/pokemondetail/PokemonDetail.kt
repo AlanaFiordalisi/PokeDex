@@ -1,4 +1,4 @@
-package com.example.pokedex.screens
+package com.example.pokedex.screens.pokemondetail
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -34,6 +34,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.example.pokedex.common.ErrorIndicator
+import com.example.pokedex.common.LoadingIndicator
 import com.example.pokedex.network.model.PokemonDetailResponse
 import com.example.pokedex.network.model.PokemonSpritesResponse
 import com.example.pokedex.network.model.PokemonType
@@ -47,23 +49,37 @@ import com.example.pokedex.ui.theme.White
 fun PokemonDetailRoute(
     viewModel: PokemonDetailViewModel = hiltViewModel()
 ) {
-    val detail by viewModel.pokemonDetail.collectAsState()
+    val detailState by viewModel.detailState.collectAsState()
     PokemonDetailScreen(
-        detail = detail
+        detailState = detailState
     )
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PokemonDetailScreen(
-    detail: PokemonDetailResponse?,
+    detailState: PokemonDetailState,
     modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
             .fillMaxSize()
     ) {
-        detail?.sprites?.getMap()?.let { spritesMap ->
+        when (detailState) {
+            PokemonDetailState.Loading -> LoadingIndicator()
+            PokemonDetailState.Error -> ErrorIndicator()
+            is PokemonDetailState.Loaded -> DetailContent(detailState.details)
+        }
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun DetailContent(
+    details: PokemonDetailResponse
+) {
+    with(details) {
+        // sprites pager
+        sprites.getMap().let { spritesMap ->
             val pagerState = rememberPagerState(pageCount = { spritesMap.size })
             Box {
                 HorizontalPager(
@@ -105,46 +121,46 @@ fun PokemonDetailScreen(
             }
         }
         Spacer(modifier = Modifier.size(8.dp))
-        detail?.let {
-            Column(
+
+        // stats
+        Column(
+            modifier = Modifier
+                .padding(horizontal = 8.dp)
+        ) {
+            Row(
                 modifier = Modifier
-                    .padding(horizontal = 8.dp)
+                    .height(IntrinsicSize.Min)
             ) {
-                Row(
-                    modifier = Modifier
-                        .height(IntrinsicSize.Min)
-                ) {
-                    StatsBlock(
-                        label = "ID",
-                        stat = "#${it.id}",
-                        modifier = Modifier.weight(1f)
-                    )
-                    Spacer(modifier = Modifier.size(8.dp))
-                    StatsBlock(
-                        label = "Weight",
-                        stat = it.weight.toString(),
-                        modifier = Modifier.weight(1f),
-                        unit = "hectograms"
-                    )
-                }
+                StatsBlock(
+                    label = "ID",
+                    stat = "#$id",
+                    modifier = Modifier.weight(1f)
+                )
                 Spacer(modifier = Modifier.size(8.dp))
-                Row(
-                    modifier = Modifier
-                        .height(IntrinsicSize.Min)
-                ) {
-                    StatsBlock(
-                        label = if (it.types.size == 1) "Type" else "Types",
-                        stat = it.types.toJoinedString(),
-                        modifier = Modifier.weight(1f)
-                    )
-                    Spacer(modifier = Modifier.size(8.dp))
-                    StatsBlock(
-                        label = "Height",
-                        stat = it.height.toString(),
-                        modifier = Modifier.weight(1f),
-                        unit = "decimeters"
-                    )
-                }
+                StatsBlock(
+                    label = "Weight",
+                    stat = weight.toString(),
+                    modifier = Modifier.weight(1f),
+                    unit = "hectograms"
+                )
+            }
+            Spacer(modifier = Modifier.size(8.dp))
+            Row(
+                modifier = Modifier
+                    .height(IntrinsicSize.Min)
+            ) {
+                StatsBlock(
+                    label = if (types.size == 1) "Type" else "Types",
+                    stat = types.toJoinedString(),
+                    modifier = Modifier.weight(1f)
+                )
+                Spacer(modifier = Modifier.size(8.dp))
+                StatsBlock(
+                    label = "Height",
+                    stat = height.toString(),
+                    modifier = Modifier.weight(1f),
+                    unit = "decimeters"
+                )
             }
         }
     }
@@ -189,21 +205,23 @@ fun StatsBlock(
 fun PokemonDetailPreview() {
     PokeDexTheme {
         PokemonDetailScreen(
-            detail = PokemonDetailResponse(
-                id = 35,
-                name = "Clefairy",
-                height = 3,
-                weight = 2,
-                sprites = PokemonSpritesResponse(
-                    frontDefault = "fake_url"
-                ),
-                types = listOf(
-                    PokemonTypeResponse(
-                        slot = 1,
-                        type = PokemonType(
-                            name = "grass"
-                        )
+            detailState = PokemonDetailState.Loaded(
+                PokemonDetailResponse(
+                    id = 35,
+                    name = "Clefairy",
+                    height = 3,
+                    weight = 2,
+                    sprites = PokemonSpritesResponse(
+                        frontDefault = "fake_url"
                     ),
+                    types = listOf(
+                        PokemonTypeResponse(
+                            slot = 1,
+                            type = PokemonType(
+                                name = "grass"
+                            )
+                        ),
+                    )
                 )
             )
         )

@@ -1,4 +1,4 @@
-package com.example.pokedex.screens
+package com.example.pokedex.screens.pokemonlist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

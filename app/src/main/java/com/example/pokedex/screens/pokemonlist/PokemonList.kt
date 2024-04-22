@@ -1,4 +1,4 @@
-package com.example.pokedex.screens
+package com.example.pokedex.screens.pokemonlist
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
