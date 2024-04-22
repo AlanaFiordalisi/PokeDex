@@ -25,7 +25,9 @@ fun PokeDexNavHost(
         composable(
             route = "pokemon_detail/{name}"
         ) {
-            PokemonDetailRoute()
+            PokemonDetailRoute(
+                onBackClick = navHostController::popBackStack
+            )
         }
     }
 }

@@ -16,7 +16,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -50,27 +57,54 @@ import com.example.pokedex.ui.theme.White
 
 @Composable
 fun PokemonDetailRoute(
-    viewModel: PokemonDetailViewModel = hiltViewModel()
+    onBackClick: () -> Unit,
+    viewModel: PokemonDetailViewModel = hiltViewModel(),
 ) {
     val detailState by viewModel.detailState.collectAsState()
     PokemonDetailScreen(
-        detailState = detailState
+        name = viewModel.name,
+        detailState = detailState,
+        onBackClick = onBackClick,
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PokemonDetailScreen(
+    name: String?,
     detailState: PokemonDetailState,
-    modifier: Modifier = Modifier
+    onBackClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-    ) {
-        when (detailState) {
-            PokemonDetailState.Loading -> LoadingIndicator()
-            PokemonDetailState.Error -> ErrorIndicator()
-            is PokemonDetailState.Loaded -> DetailContent(detailState.details)
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(text = name?.replaceFirstChar(Char::uppercaseChar) ?: "")
+                },
+                navigationIcon = {
+                    IconButton(
+                        onClick = onBackClick
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = stringResource(R.string.cd_back)
+                        )
+                    }
+                }
+            )
+        }
+    ) { paddingValues ->
+        Column(
+            modifier = modifier
+                .padding(paddingValues)
+                .fillMaxSize()
+        ) {
+            when (detailState) {
+                PokemonDetailState.Loading -> LoadingIndicator()
+                PokemonDetailState.Error -> ErrorIndicator()
+                is PokemonDetailState.Loaded -> DetailContent(detailState.details)
+            }
         }
     }
 }
@@ -78,7 +112,7 @@ fun PokemonDetailScreen(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun DetailContent(
-    details: PokemonDetailResponse
+    details: PokemonDetailResponse,
 ) {
     with(details) {
         // sprites pager
@@ -211,6 +245,7 @@ fun StatsBlock(
 fun PokemonDetailPreview() {
     PokeDexTheme {
         PokemonDetailScreen(
+            name = "Clefairy",
             detailState = PokemonDetailState.Loaded(
                 PokemonDetailResponse(
                     id = 35,
@@ -229,7 +264,8 @@ fun PokemonDetailPreview() {
                         ),
                     )
                 )
-            )
+            ),
+            onBackClick = {}
         )
     }
 }

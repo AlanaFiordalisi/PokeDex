@@ -17,7 +17,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -31,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.example.pokedex.R
 import com.example.pokedex.common.ErrorIndicator
 import com.example.pokedex.common.LoadingIndicator
 import com.example.pokedex.network.model.PokemonListResponse
@@ -52,24 +56,36 @@ fun PokemonListRoute(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PokemonListScreen(
     listState: PokemonListState,
     onPokemonClick: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(White)
-    ) {
-        when (listState) {
-            PokemonListState.Loading -> LoadingIndicator()
-            PokemonListState.Error -> ErrorIndicator()
-            is PokemonListState.Loaded -> ListContent(
-                pokemonList = listState.list,
-                onPokemonClick = onPokemonClick
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(text = stringResource(R.string.title_pokemon_list))
+                }
             )
+        }
+    ) { paddingValues ->
+        Column(
+            modifier = modifier
+                .padding(paddingValues)
+                .fillMaxSize()
+                .background(White)
+        ) {
+            when (listState) {
+                PokemonListState.Loading -> LoadingIndicator()
+                PokemonListState.Error -> ErrorIndicator()
+                is PokemonListState.Loaded -> ListContent(
+                    pokemonList = listState.list,
+                    onPokemonClick = onPokemonClick
+                )
+            }
         }
     }
 }
@@ -79,16 +95,17 @@ private fun ListContent(
     pokemonList: PokemonListResponse,
     onPokemonClick: (String) -> Unit
 ) {
-    LazyColumn(
-        modifier = Modifier
-            .padding(horizontal = 10.dp)
-    ) {
+    LazyColumn {
+        item {
+            Spacer(modifier = Modifier.size(10.dp))
+        }
         items(pokemonList.results) { pokemon ->
             PokemonItem(
                 name = pokemon.name,
                 number = pokemon.getPokemonNumber() ?: 0,
                 imageUrl = pokemon.getPokemonSpriteUrl(),
                 onClick = { onPokemonClick(pokemon.name) },
+                modifier = Modifier.padding(horizontal = 10.dp),
             )
             Spacer(modifier = Modifier.size(10.dp))
         }

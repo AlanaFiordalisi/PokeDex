@@ -3,6 +3,7 @@
     <string name="body_loading_failure">Uh oh! This information failed to load.</string>
     <string name="cd_loading">loading</string>
     <!-- Pokemon List -->
+    <string name="title_pokemon_list">Pokemon List</string>
     <string name="label_front_default">front default</string>
     <string name="label_front_shiny">front shiny</string>
     <string name="label_front_female">front female</string>
@@ -18,6 +19,7 @@
     <string name="body_hectograms">hectograms</string>
     <string name="label_height">Height</string>
     <string name="body_decimeters">decimeters</string>
+    <string name="cd_back">back</string>
     <plurals name="body_types">
         <item quantity="one">Type</item>
         <item quantity="other">Types</item>
