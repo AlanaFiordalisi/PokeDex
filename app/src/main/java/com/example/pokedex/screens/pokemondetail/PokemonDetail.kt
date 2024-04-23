@@ -1,5 +1,6 @@
 package com.example.pokedex.screens.pokemondetail
 
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -14,8 +15,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -54,6 +58,7 @@ import com.example.pokedex.network.model.PokemonTypeResponse
 import com.example.pokedex.network.model.getMap
 import com.example.pokedex.network.model.toJoinedString
 import com.example.pokedex.ui.theme.Green900
+import com.example.pokedex.ui.theme.LightGrey
 import com.example.pokedex.ui.theme.PokeDexTheme
 import com.example.pokedex.ui.theme.White
 
@@ -72,7 +77,7 @@ fun PokemonDetailRoute(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PokemonDetailScreen(
+private fun PokemonDetailScreen(
     name: String?,
     detailState: PokemonDetailState,
     onBackClick: () -> Unit,
@@ -113,14 +118,16 @@ fun PokemonDetailScreen(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun DetailContent(
+private fun DetailContent(
     details: PokemonDetailResponse,
 ) {
     with(details) {
         // sprites pager
         sprites.getMap().let { spritesMap ->
             val pagerState = rememberPagerState(pageCount = { spritesMap.size })
-            Box {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                 HorizontalPager(
                     state = pagerState,
                 ) { page ->
@@ -157,6 +164,10 @@ fun DetailContent(
                         }
                     }
                 }
+                PagerProgressIndicator(
+                    pageCount = spritesMap.size,
+                    currentPage = pagerState.currentPage,
+                )
             }
         }
         Spacer(modifier = Modifier.size(8.dp))
@@ -209,7 +220,34 @@ fun DetailContent(
 }
 
 @Composable
-fun StatsBlock(
+private fun PagerProgressIndicator(
+    pageCount: Int,
+    currentPage: Int,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier
+            .padding(vertical = 8.dp)
+    ) {
+        repeat(pageCount) { index ->
+            val width by animateDpAsState(
+                if (currentPage == index) 24.dp else 12.dp,
+                label = "indicator width"
+            )
+            Box(
+                modifier = modifier
+                    .padding(horizontal = 4.dp)
+                    .height(12.dp)
+                    .width(width)
+                    .clip(RoundedCornerShape(percent = 50))
+                    .background(LightGrey)
+            )
+        }
+    }
+}
+
+@Composable
+private fun StatsBlock(
     label: String,
     stat: String,
     modifier: Modifier = Modifier,
@@ -247,7 +285,7 @@ fun StatsBlock(
 
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
-fun PokemonDetailPreview() {
+private fun PokemonDetailPreview() {
     PokeDexTheme {
         PokemonDetailScreen(
             name = "Clefairy",

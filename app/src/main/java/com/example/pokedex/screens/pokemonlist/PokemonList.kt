@@ -58,7 +58,7 @@ fun PokemonListRoute(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PokemonListScreen(
+private fun PokemonListScreen(
     listState: PokemonListState,
     onPokemonClick: (String) -> Unit,
     modifier: Modifier = Modifier
@@ -112,7 +112,7 @@ private fun ListContent(
 }
 
 @Composable
-fun PokemonItem(
+private fun PokemonItem(
     name: String,
     number: Int,
     imageUrl: String,
@@ -165,7 +165,7 @@ fun PokemonItem(
 
 @Composable
 @Preview
-fun PokemonItemPreview() {
+private fun PokemonItemPreview() {
     PokeDexTheme {
         PokemonItem(
             name = "Pikachu",
