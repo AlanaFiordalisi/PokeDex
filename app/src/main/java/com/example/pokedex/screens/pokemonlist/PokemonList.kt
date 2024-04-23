@@ -1,7 +1,9 @@
 package com.example.pokedex.screens.pokemonlist
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -12,8 +14,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ElevatedCard
@@ -27,6 +33,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -94,25 +101,44 @@ private fun ListContent(
     pokemonList: PokemonListResponse,
     onPokemonClick: (String) -> Unit
 ) {
-    LazyColumn {
-        item {
-            Spacer(modifier = Modifier.size(10.dp))
+    val localConfiguration = LocalConfiguration.current
+    when (localConfiguration.orientation) {
+        Configuration.ORIENTATION_PORTRAIT -> {
+            LazyColumn {
+                item {
+                    Spacer(modifier = Modifier.size(10.dp))
+                }
+                items(pokemonList.results) { pokemon ->
+                    PokemonItemRow(
+                        name = pokemon.name,
+                        number = pokemon.getPokemonNumber() ?: 0,
+                        imageUrl = pokemon.getPokemonSpriteUrl(),
+                        onClick = { onPokemonClick(pokemon.name) },
+                        modifier = Modifier.padding(horizontal = 10.dp),
+                    )
+                    Spacer(modifier = Modifier.size(10.dp))
+                }
+            }
         }
-        items(pokemonList.results) { pokemon ->
-            PokemonItem(
-                name = pokemon.name,
-                number = pokemon.getPokemonNumber() ?: 0,
-                imageUrl = pokemon.getPokemonSpriteUrl(),
-                onClick = { onPokemonClick(pokemon.name) },
-                modifier = Modifier.padding(horizontal = 10.dp),
-            )
-            Spacer(modifier = Modifier.size(10.dp))
+
+        else -> {
+            LazyVerticalGrid(columns = GridCells.Adaptive(minSize = 150.dp)) {
+                items(pokemonList.results) { pokemon ->
+                    PokemonItemSquare(
+                        name = pokemon.name,
+                        number = pokemon.getPokemonNumber() ?: 0,
+                        imageUrl = pokemon.getPokemonSpriteUrl(),
+                        onClick = { onPokemonClick(pokemon.name) },
+                        modifier = Modifier.padding(horizontal = 10.dp),
+                    )
+                }
+            }
         }
     }
 }
 
 @Composable
-private fun PokemonItem(
+private fun PokemonItemRow(
     name: String,
     number: Int,
     imageUrl: String,
@@ -164,10 +190,69 @@ private fun PokemonItem(
 }
 
 @Composable
+private fun PokemonItemSquare(
+    name: String,
+    number: Int,
+    imageUrl: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    ElevatedCard(
+        shape = RoundedCornerShape(4.dp),
+        modifier = modifier
+            .clickable { onClick() }
+            .padding(vertical = 6.dp)
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .widthIn(min = 150.dp)
+        ) {
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(imageUrl)
+                    .build(),
+                contentDescription = name,
+                modifier = Modifier
+                    .size(64.dp)
+            )
+            val chipColor = if (isSystemInDarkTheme()) DarkGrey else LightGrey
+            Box(
+                modifier = Modifier
+                    .widthIn(min = 36.dp)
+                    .clip(RoundedCornerShape(percent = 50))
+                    .background(chipColor)
+            ) {
+                Text(
+                    text = number.toString(),
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .padding(vertical = 4.dp, horizontal = 6.dp)
+                )
+            }
+            Text(text = name)
+        }
+    }
+}
+
+@Composable
 @Preview
 private fun PokemonItemPreview() {
     PokeDexTheme {
-        PokemonItem(
+        PokemonItemRow(
+            name = "Pikachu",
+            number = 987,
+            onClick = {},
+            imageUrl = ""
+        )
+    }
+}
+
+@Composable
+@Preview
+private fun PokemonItemSquarePreview() {
+    PokeDexTheme {
+        PokemonItemSquare(
             name = "Pikachu",
             number = 987,
             onClick = {},
