@@ -1,7 +1,7 @@
 package com.example.pokedex.repository
 
-import com.example.pokedex.network.model.PokemonDetailResponse
-import com.example.pokedex.network.model.PokemonListResponse
+import com.example.pokedex.model.PokemonDetailResponse
+import com.example.pokedex.model.PokemonListResponse
 
 interface PokemonRepository {
 

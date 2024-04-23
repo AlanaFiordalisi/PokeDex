@@ -1,7 +1,7 @@
 package com.example.pokedex
 
-import com.example.pokedex.network.model.PokemonListResponse
-import com.example.pokedex.network.model.PokemonListResult
+import com.example.pokedex.model.PokemonListResponse
+import com.example.pokedex.model.PokemonListResult
 import com.example.pokedex.repository.PokemonRepository
 import com.example.pokedex.screens.pokemonlist.PokemonListState
 import com.example.pokedex.screens.pokemonlist.PokemonListViewModel

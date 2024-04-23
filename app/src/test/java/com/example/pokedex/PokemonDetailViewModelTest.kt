@@ -1,10 +1,10 @@
 package com.example.pokedex
 
 import androidx.lifecycle.SavedStateHandle
-import com.example.pokedex.network.model.PokemonDetailResponse
-import com.example.pokedex.network.model.PokemonSpritesResponse
-import com.example.pokedex.network.model.PokemonType
-import com.example.pokedex.network.model.PokemonTypeResponse
+import com.example.pokedex.model.PokemonDetailResponse
+import com.example.pokedex.model.PokemonSpritesResponse
+import com.example.pokedex.model.PokemonType
+import com.example.pokedex.model.PokemonTypeResponse
 import com.example.pokedex.repository.PokemonRepository
 import com.example.pokedex.screens.pokemondetail.PokemonDetailState
 import com.example.pokedex.screens.pokemondetail.PokemonDetailViewModel

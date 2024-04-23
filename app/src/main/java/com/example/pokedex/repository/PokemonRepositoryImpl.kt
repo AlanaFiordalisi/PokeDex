@@ -1,8 +1,8 @@
 package com.example.pokedex.repository
 
 import com.example.pokedex.network.PokeApiService
-import com.example.pokedex.network.model.PokemonDetailResponse
-import com.example.pokedex.network.model.PokemonListResponse
+import com.example.pokedex.model.PokemonDetailResponse
+import com.example.pokedex.model.PokemonListResponse
 import com.skydoves.sandwich.onSuccess
 import javax.inject.Inject
 

@@ -3,7 +3,6 @@ package com.example.pokedex.screens.pokemonlist
 import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -14,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -44,9 +42,9 @@ import coil.request.ImageRequest
 import com.example.pokedex.R
 import com.example.pokedex.common.ErrorIndicator
 import com.example.pokedex.common.LoadingIndicator
-import com.example.pokedex.network.model.PokemonListResponse
-import com.example.pokedex.network.model.getPokemonNumber
-import com.example.pokedex.network.model.getPokemonSpriteUrl
+import com.example.pokedex.model.PokemonListResponse
+import com.example.pokedex.model.getPokemonNumber
+import com.example.pokedex.model.getPokemonSpriteUrl
 import com.example.pokedex.ui.theme.DarkGrey
 import com.example.pokedex.ui.theme.LightGrey
 import com.example.pokedex.ui.theme.PokeDexTheme

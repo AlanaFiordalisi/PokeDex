@@ -1,4 +1,4 @@
-package com.example.pokedex.network.model
+package com.example.pokedex.model
 
 import com.example.pokedex.R
 import com.squareup.moshi.Json

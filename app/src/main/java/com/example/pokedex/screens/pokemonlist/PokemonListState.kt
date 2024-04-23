@@ -1,6 +1,6 @@
 package com.example.pokedex.screens.pokemonlist
 
-import com.example.pokedex.network.model.PokemonListResponse
+import com.example.pokedex.model.PokemonListResponse
 
 sealed interface PokemonListState {
     data object Loading : PokemonListState
