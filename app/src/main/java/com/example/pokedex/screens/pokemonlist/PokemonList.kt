@@ -200,13 +200,14 @@ private fun PokemonItemSquare(
     ElevatedCard(
         shape = RoundedCornerShape(4.dp),
         modifier = modifier
-            .clickable { onClick() }
             .padding(vertical = 6.dp)
+            .clickable { onClick() }
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .widthIn(min = 150.dp)
+                .padding(4.dp)
         ) {
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)

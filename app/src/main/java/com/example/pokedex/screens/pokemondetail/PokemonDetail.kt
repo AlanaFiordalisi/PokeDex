@@ -1,5 +1,6 @@
 package com.example.pokedex.screens.pokemondetail
 
+import android.content.res.Configuration
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -19,8 +20,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -37,6 +40,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
@@ -102,10 +106,12 @@ private fun PokemonDetailScreen(
             )
         }
     ) { paddingValues ->
+        val scrollState = rememberScrollState()
         Column(
             modifier = modifier
                 .padding(paddingValues)
                 .fillMaxSize()
+                .verticalScroll(scrollState)
         ) {
             when (detailState) {
                 PokemonDetailState.Loading -> LoadingIndicator()
@@ -116,17 +122,47 @@ private fun PokemonDetailScreen(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun DetailContent(
     details: PokemonDetailResponse,
+) {
+    when (LocalConfiguration.current.orientation) {
+        Configuration.ORIENTATION_PORTRAIT -> {
+            Column {
+                SpritesPager(details = details)
+                Spacer(modifier = Modifier.size(8.dp))
+                PokemonStats(details = details)
+            }
+        }
+
+        else -> {
+            Row {
+                SpritesPager(
+                    details = details,
+                    modifier = Modifier.weight(1f)
+                )
+                PokemonStats(
+                    details = details,
+                    modifier = Modifier.weight(1f)
+                )
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+private fun SpritesPager(
+    details: PokemonDetailResponse,
+    modifier: Modifier = Modifier
 ) {
     with(details) {
         // sprites pager
         sprites.getMap().let { spritesMap ->
             val pagerState = rememberPagerState(pageCount = { spritesMap.size })
             Column(
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = modifier
             ) {
                 HorizontalPager(
                     state = pagerState,
@@ -170,11 +206,44 @@ private fun DetailContent(
                 )
             }
         }
-        Spacer(modifier = Modifier.size(8.dp))
+    }
+}
 
-        // stats
+@Composable
+private fun PagerProgressIndicator(
+    pageCount: Int,
+    currentPage: Int,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier
+            .padding(vertical = 8.dp)
+    ) {
+        repeat(pageCount) { index ->
+            val width by animateDpAsState(
+                if (currentPage == index) 24.dp else 12.dp,
+                label = "indicator width"
+            )
+            Box(
+                modifier = modifier
+                    .padding(horizontal = 4.dp)
+                    .height(12.dp)
+                    .width(width)
+                    .clip(RoundedCornerShape(percent = 50))
+                    .background(LightGrey)
+            )
+        }
+    }
+}
+
+@Composable
+private fun PokemonStats(
+    details: PokemonDetailResponse,
+    modifier: Modifier = Modifier,
+) {
+    with(details) {
         Column(
-            modifier = Modifier
+            modifier = modifier
                 .padding(horizontal = 8.dp)
         ) {
             Row(
@@ -215,33 +284,6 @@ private fun DetailContent(
                     unit = stringResource(id = R.string.body_decimeters)
                 )
             }
-        }
-    }
-}
-
-@Composable
-private fun PagerProgressIndicator(
-    pageCount: Int,
-    currentPage: Int,
-    modifier: Modifier = Modifier,
-) {
-    Row(
-        modifier = modifier
-            .padding(vertical = 8.dp)
-    ) {
-        repeat(pageCount) { index ->
-            val width by animateDpAsState(
-                if (currentPage == index) 24.dp else 12.dp,
-                label = "indicator width"
-            )
-            Box(
-                modifier = modifier
-                    .padding(horizontal = 4.dp)
-                    .height(12.dp)
-                    .width(width)
-                    .clip(RoundedCornerShape(percent = 50))
-                    .background(LightGrey)
-            )
         }
     }
 }
