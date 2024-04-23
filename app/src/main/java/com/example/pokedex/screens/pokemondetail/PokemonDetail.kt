@@ -2,6 +2,7 @@ package com.example.pokedex.screens.pokemondetail
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -52,6 +53,7 @@ import com.example.pokedex.network.model.PokemonType
 import com.example.pokedex.network.model.PokemonTypeResponse
 import com.example.pokedex.network.model.getMap
 import com.example.pokedex.network.model.toJoinedString
+import com.example.pokedex.ui.theme.Green900
 import com.example.pokedex.ui.theme.PokeDexTheme
 import com.example.pokedex.ui.theme.White
 
@@ -213,11 +215,13 @@ fun StatsBlock(
     modifier: Modifier = Modifier,
     unit: String? = null,
 ) {
+    val backgroundColor = if (isSystemInDarkTheme()) Green900 else Color(0xFFB8E3AF)
+    val fontColor = if (isSystemInDarkTheme()) Color(0xFFB8E3AF) else Green900
     Column(
         modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(8.dp))
-            .background(Color(0xFFB8E3AF))
+            .background(backgroundColor)
             .padding(8.dp)
     ) {
         Text(label)
@@ -225,6 +229,7 @@ fun StatsBlock(
         Text(
             text = stat,
             fontSize = 36.sp,
+            color = fontColor,
             lineHeight = 36.sp,
             fontWeight = FontWeight.W500,
             textAlign = TextAlign.End,

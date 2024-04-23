@@ -2,6 +2,7 @@ package com.example.pokedex.screens.pokemonlist
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -39,6 +40,7 @@ import com.example.pokedex.common.LoadingIndicator
 import com.example.pokedex.network.model.PokemonListResponse
 import com.example.pokedex.network.model.getPokemonNumber
 import com.example.pokedex.network.model.getPokemonSpriteUrl
+import com.example.pokedex.ui.theme.DarkGrey
 import com.example.pokedex.ui.theme.LightGrey
 import com.example.pokedex.ui.theme.PokeDexTheme
 
@@ -142,11 +144,12 @@ fun PokemonItem(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(text = name)
+                val chipColor = if (isSystemInDarkTheme()) DarkGrey else LightGrey
                 Box(
                     modifier = Modifier
                         .widthIn(min = 36.dp)
                         .clip(RoundedCornerShape(percent = 50))
-                        .background(LightGrey)
+                        .background(chipColor)
                 ) {
                     Text(
                         text = number.toString(),
