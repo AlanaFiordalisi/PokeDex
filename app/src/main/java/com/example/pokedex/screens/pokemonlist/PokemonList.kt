@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
@@ -42,7 +41,6 @@ import com.example.pokedex.network.model.getPokemonNumber
 import com.example.pokedex.network.model.getPokemonSpriteUrl
 import com.example.pokedex.ui.theme.LightGrey
 import com.example.pokedex.ui.theme.PokeDexTheme
-import com.example.pokedex.ui.theme.White
 
 @Composable
 fun PokemonListRoute(
@@ -76,7 +74,6 @@ fun PokemonListScreen(
             modifier = modifier
                 .padding(paddingValues)
                 .fillMaxSize()
-                .background(White)
         ) {
             when (listState) {
                 PokemonListState.Loading -> LoadingIndicator()
@@ -121,9 +118,6 @@ fun PokemonItem(
     modifier: Modifier = Modifier,
 ) {
     ElevatedCard(
-        colors = CardDefaults.cardColors(
-            containerColor = White
-        ),
         shape = RoundedCornerShape(4.dp),
         modifier = modifier
             .fillMaxWidth()
