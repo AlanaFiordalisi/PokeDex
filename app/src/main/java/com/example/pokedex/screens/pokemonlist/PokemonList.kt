@@ -59,7 +59,8 @@ fun PokemonListRoute(
     val listState by viewModel.listState.collectAsState() // TODO: with lifecycle
     PokemonListScreen(
         listState = listState,
-        onPokemonClick = onPokemonClick
+        onPokemonClick = onPokemonClick,
+        onTryAgainClick = viewModel::getPokemonList,
     )
 }
 
@@ -68,7 +69,8 @@ fun PokemonListRoute(
 private fun PokemonListScreen(
     listState: PokemonListState,
     onPokemonClick: (String) -> Unit,
-    modifier: Modifier = Modifier
+    onTryAgainClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Scaffold(
         topBar = {
@@ -86,7 +88,7 @@ private fun PokemonListScreen(
         ) {
             when (listState) {
                 PokemonListState.Loading -> LoadingIndicator()
-                PokemonListState.Error -> ErrorIndicator()
+                PokemonListState.Error -> ErrorIndicator(onTryAgainClick)
                 is PokemonListState.Loaded -> ListContent(
                     pokemonList = listState.list,
                     onPokemonClick = onPokemonClick

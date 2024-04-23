@@ -21,7 +21,7 @@ class PokemonListViewModel @Inject constructor(
         getPokemonList()
     }
 
-    private fun getPokemonList() {
+    fun getPokemonList() {
         viewModelScope.launch {
             _listState.emit(PokemonListState.Loading)
             val list = pokemonRepository.getPokemonList()

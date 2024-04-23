@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">PokeDex</string>
-    <string name="body_loading_failure">Uh oh! This information failed to load.</string>
     <string name="cd_loading">loading</string>
     <!-- Pokemon List -->
     <string name="title_pokemon_list">Pokemon List</string>
@@ -24,4 +23,7 @@
         <item quantity="one">Type</item>
         <item quantity="other">Types</item>
     </plurals>
+    <!-- Error Loading Indicator -->
+    <string name="label_try_again">Try again</string>
+    <string name="body_loading_failure">Uh oh! This information failed to load.</string>
 </resources>

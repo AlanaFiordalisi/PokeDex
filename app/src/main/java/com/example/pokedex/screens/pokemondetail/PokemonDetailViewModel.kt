@@ -29,7 +29,7 @@ class PokemonDetailViewModel @Inject constructor(
         }
     }
 
-    private fun getPokemonDetail() {
+    fun getPokemonDetail() {
         viewModelScope.launch {
             _detailState.emit(PokemonDetailState.Loading)
             name?.let {

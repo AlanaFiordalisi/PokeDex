@@ -76,6 +76,7 @@ fun PokemonDetailRoute(
         name = viewModel.name,
         detailState = detailState,
         onBackClick = onBackClick,
+        onTryAgainClick = viewModel::getPokemonDetail,
     )
 }
 
@@ -85,6 +86,7 @@ private fun PokemonDetailScreen(
     name: String?,
     detailState: PokemonDetailState,
     onBackClick: () -> Unit,
+    onTryAgainClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
@@ -115,7 +117,7 @@ private fun PokemonDetailScreen(
         ) {
             when (detailState) {
                 PokemonDetailState.Loading -> LoadingIndicator()
-                PokemonDetailState.Error -> ErrorIndicator()
+                PokemonDetailState.Error -> ErrorIndicator(onTryAgainClick)
                 is PokemonDetailState.Loaded -> DetailContent(detailState.details)
             }
         }
@@ -350,7 +352,8 @@ private fun PokemonDetailPreview() {
                     )
                 )
             ),
-            onBackClick = {}
+            onBackClick = {},
+            onTryAgainClick = {}
         )
     }
 }
