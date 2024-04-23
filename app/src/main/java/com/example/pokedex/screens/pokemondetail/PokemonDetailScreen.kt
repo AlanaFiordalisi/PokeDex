@@ -36,7 +36,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
@@ -59,7 +58,9 @@ import com.example.pokedex.model.PokemonType
 import com.example.pokedex.model.PokemonTypeResponse
 import com.example.pokedex.model.getMap
 import com.example.pokedex.model.toJoinedString
+import com.example.pokedex.ui.theme.DarkGreyTranslucent
 import com.example.pokedex.ui.theme.Green900
+import com.example.pokedex.ui.theme.LightGreen
 import com.example.pokedex.ui.theme.LightGrey
 import com.example.pokedex.ui.theme.PokeDexTheme
 import com.example.pokedex.ui.theme.White
@@ -188,7 +189,7 @@ private fun SpritesPager(
                             modifier = Modifier
                                 .padding(end = 8.dp)
                                 .clip(RoundedCornerShape(2.dp))
-                                .background(Color(0x99000000))
+                                .background(DarkGreyTranslucent)
                                 .align(Alignment.BottomEnd)
                         ) {
                             Text(
@@ -295,8 +296,8 @@ private fun StatsBlock(
     modifier: Modifier = Modifier,
     unit: String? = null,
 ) {
-    val backgroundColor = if (isSystemInDarkTheme()) Green900 else Color(0xFFB8E3AF)
-    val fontColor = if (isSystemInDarkTheme()) Color(0xFFB8E3AF) else Green900
+    val backgroundColor = if (isSystemInDarkTheme()) Green900 else LightGreen
+    val fontColor = if (isSystemInDarkTheme()) LightGreen else Green900
     Column(
         modifier = modifier
             .fillMaxWidth()

@@ -170,20 +170,7 @@ private fun PokemonItemRow(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(text = name)
-                val chipColor = if (isSystemInDarkTheme()) DarkGrey else LightGrey
-                Box(
-                    modifier = Modifier
-                        .widthIn(min = 36.dp)
-                        .clip(RoundedCornerShape(percent = 50))
-                        .background(chipColor)
-                ) {
-                    Text(
-                        text = number.toString(),
-                        modifier = Modifier
-                            .align(Alignment.Center)
-                            .padding(vertical = 4.dp, horizontal = 6.dp)
-                    )
-                }
+                PokemonNumberChip(label = number.toString())
             }
         }
     }
@@ -217,22 +204,27 @@ private fun PokemonItemSquare(
                 modifier = Modifier
                     .size(64.dp)
             )
-            val chipColor = if (isSystemInDarkTheme()) DarkGrey else LightGrey
-            Box(
-                modifier = Modifier
-                    .widthIn(min = 36.dp)
-                    .clip(RoundedCornerShape(percent = 50))
-                    .background(chipColor)
-            ) {
-                Text(
-                    text = number.toString(),
-                    modifier = Modifier
-                        .align(Alignment.Center)
-                        .padding(vertical = 4.dp, horizontal = 6.dp)
-                )
-            }
+            PokemonNumberChip(label = number.toString())
             Text(text = name)
         }
+    }
+}
+
+@Composable
+private fun PokemonNumberChip(label: String) {
+    val chipColor = if (isSystemInDarkTheme()) DarkGrey else LightGrey
+    Box(
+        modifier = Modifier
+            .widthIn(min = 36.dp)
+            .clip(RoundedCornerShape(percent = 50))
+            .background(chipColor)
+    ) {
+        Text(
+            text = label,
+            modifier = Modifier
+                .align(Alignment.Center)
+                .padding(vertical = 4.dp, horizontal = 6.dp)
+        )
     }
 }
 
