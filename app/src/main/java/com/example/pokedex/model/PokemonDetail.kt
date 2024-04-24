@@ -5,17 +5,17 @@ import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class PokemonDetailResponse(
+data class PokemonDetail(
     val id: Int,
     val name: String,
     val height: Int,
     val weight: Int,
-    val sprites: PokemonSpritesResponse,
+    val sprites: PokemonSprites,
     val types: List<PokemonTypeResponse>
 )
 
 @JsonClass(generateAdapter = true)
-data class PokemonSpritesResponse(
+data class PokemonSprites(
     @Json(name = "front_default")
     val frontDefault: String? = null,
     @Json(name = "front_shiny")
@@ -34,7 +34,7 @@ data class PokemonSpritesResponse(
     val backShinyFemale: String? = null,
 )
 
-fun PokemonSpritesResponse.getMap(): Map<Int, String> {
+fun PokemonSprites.getMap(): Map<Int, String> {
     val map = mutableMapOf<Int, String>()
     frontDefault?.let { map.put(R.string.label_front_default, it) }
     frontShiny?.let { map.put(R.string.label_front_shiny, it) }

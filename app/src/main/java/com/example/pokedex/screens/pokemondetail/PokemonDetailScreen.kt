@@ -47,13 +47,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.pokedex.R
 import com.example.pokedex.common.ErrorIndicator
 import com.example.pokedex.common.LoadingIndicator
-import com.example.pokedex.model.PokemonDetailResponse
-import com.example.pokedex.model.PokemonSpritesResponse
+import com.example.pokedex.model.PokemonDetail
+import com.example.pokedex.model.PokemonSprites
 import com.example.pokedex.model.PokemonType
 import com.example.pokedex.model.PokemonTypeResponse
 import com.example.pokedex.model.getMap
@@ -70,7 +71,7 @@ fun PokemonDetailRoute(
     onBackClick: () -> Unit,
     viewModel: PokemonDetailViewModel = hiltViewModel(),
 ) {
-    val detailState by viewModel.detailState.collectAsState()
+    val detailState by viewModel.detailState.collectAsStateWithLifecycle()
     PokemonDetailScreen(
         name = viewModel.name,
         detailState = detailState,
@@ -125,7 +126,7 @@ private fun PokemonDetailScreen(
 
 @Composable
 private fun DetailContent(
-    details: PokemonDetailResponse,
+    details: PokemonDetail,
 ) {
     when (LocalConfiguration.current.orientation) {
         Configuration.ORIENTATION_PORTRAIT -> {
@@ -154,7 +155,7 @@ private fun DetailContent(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun SpritesPager(
-    details: PokemonDetailResponse,
+    details: PokemonDetail,
     modifier: Modifier = Modifier
 ) {
     with(details) {
@@ -239,7 +240,7 @@ private fun PagerProgressIndicator(
 
 @Composable
 private fun PokemonStats(
-    details: PokemonDetailResponse,
+    details: PokemonDetail,
     modifier: Modifier = Modifier,
 ) {
     with(details) {
@@ -333,12 +334,12 @@ private fun PokemonDetailPreview() {
         PokemonDetailScreen(
             name = "Clefairy",
             detailState = PokemonDetailState.Loaded(
-                PokemonDetailResponse(
+                PokemonDetail(
                     id = 35,
                     name = "Clefairy",
                     height = 3,
                     weight = 2,
-                    sprites = PokemonSpritesResponse(
+                    sprites = PokemonSprites(
                         frontDefault = "fake_url"
                     ),
                     types = listOf(

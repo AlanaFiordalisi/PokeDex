@@ -1,7 +1,7 @@
 package com.example.pokedex.network
 
-import com.example.pokedex.model.PokemonDetailResponse
-import com.example.pokedex.model.PokemonListResponse
+import com.example.pokedex.model.PokemonDetail
+import com.example.pokedex.model.PokemonList
 import com.skydoves.sandwich.ApiResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -12,10 +12,10 @@ interface PokeApiService {
     @GET("pokemon")
     suspend fun getPokemonList(
         @Query("limit") limit: Int
-    ) : ApiResponse<PokemonListResponse>
+    ) : ApiResponse<PokemonList>
 
     @GET("pokemon/{name}")
     suspend fun getPokemonDetail(
         @Path("name") name: String
-    ) : ApiResponse<PokemonDetailResponse>
+    ) : ApiResponse<PokemonDetail>
 }

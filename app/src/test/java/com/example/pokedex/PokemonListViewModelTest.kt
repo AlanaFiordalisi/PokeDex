@@ -1,7 +1,7 @@
 package com.example.pokedex
 
-import com.example.pokedex.model.PokemonListResponse
-import com.example.pokedex.model.PokemonListResult
+import com.example.pokedex.model.PokemonList
+import com.example.pokedex.model.PokemonListItem
 import com.example.pokedex.repository.PokemonRepository
 import com.example.pokedex.screens.pokemonlist.PokemonListState
 import com.example.pokedex.screens.pokemonlist.PokemonListViewModel
@@ -58,17 +58,17 @@ class PokemonListViewModelTest {
     }
 
     companion object FakeData {
-        private val listResponse = PokemonListResponse(
+        private val listResponse = PokemonList(
             results = listOf(
-                PokemonListResult(
+                PokemonListItem(
                     name = "bulbasaur",
                     url = "fake_url",
                 ),
-                PokemonListResult(
+                PokemonListItem(
                     name = "wartortle",
                     url = "fake_url",
                 ),
-                PokemonListResult(
+                PokemonListItem(
                     name = "blastoise",
                     url = "fake_url"
                 )

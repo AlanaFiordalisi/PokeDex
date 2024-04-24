@@ -37,12 +37,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.pokedex.R
 import com.example.pokedex.common.ErrorIndicator
 import com.example.pokedex.common.LoadingIndicator
-import com.example.pokedex.model.PokemonListResponse
+import com.example.pokedex.model.PokemonList
 import com.example.pokedex.model.getPokemonNumber
 import com.example.pokedex.model.getPokemonSpriteUrl
 import com.example.pokedex.ui.theme.DarkGrey
@@ -54,7 +55,7 @@ fun PokemonListRoute(
     onPokemonClick: (String) -> Unit,
     viewModel: PokemonListViewModel = hiltViewModel()
 ) {
-    val listState by viewModel.listState.collectAsState() // TODO: with lifecycle
+    val listState by viewModel.listState.collectAsStateWithLifecycle()
     PokemonListScreen(
         listState = listState,
         onPokemonClick = onPokemonClick,
@@ -98,7 +99,7 @@ private fun PokemonListScreen(
 
 @Composable
 private fun ListContent(
-    pokemonList: PokemonListResponse,
+    pokemonList: PokemonList,
     onPokemonClick: (String) -> Unit
 ) {
     val localConfiguration = LocalConfiguration.current

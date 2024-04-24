@@ -1,11 +1,11 @@
 package com.example.pokedex.repository
 
-import com.example.pokedex.model.PokemonDetailResponse
-import com.example.pokedex.model.PokemonListResponse
+import com.example.pokedex.model.PokemonDetail
+import com.example.pokedex.model.PokemonList
 
 interface PokemonRepository {
 
-    suspend fun getPokemonList(limit: Int = 60): PokemonListResponse?
+    suspend fun getPokemonList(limit: Int = 60): PokemonList?
 
-    suspend fun getPokemonDetail(name: String): PokemonDetailResponse?
+    suspend fun getPokemonDetail(name: String): PokemonDetail?
 }

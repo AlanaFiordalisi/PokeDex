@@ -26,7 +26,6 @@ private val LightColorScheme = lightColorScheme(
     primary = Green900,
     secondary = Teal700,
     tertiary = Purple800,
-    surface = White, // todo: delete?
     surfaceTint = Green900,
 )
 

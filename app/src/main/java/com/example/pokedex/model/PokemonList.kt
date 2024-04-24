@@ -3,23 +3,23 @@ package com.example.pokedex.model
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class PokemonListResponse(
-    val results: List<PokemonListResult>
+data class PokemonList(
+    val results: List<PokemonListItem>
 )
 
 @JsonClass(generateAdapter = true)
-data class PokemonListResult(
+data class PokemonListItem(
     val name: String,
     val url: String,
 )
 
-fun PokemonListResult.getPokemonNumber(): Int? {
+fun PokemonListItem.getPokemonNumber(): Int? {
     val regex = "/[0-9]*/$".toRegex()
 
     return regex.find(this.url)?.value?.trim('/')?.toInt()
 }
 
-fun PokemonListResult.getPokemonSpriteUrl(): String {
+fun PokemonListItem.getPokemonSpriteUrl(): String {
     return "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" +
             this.getPokemonNumber() +
             ".png"

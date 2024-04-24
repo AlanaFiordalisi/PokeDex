@@ -1,8 +1,8 @@
 package com.example.pokedex
 
 import androidx.lifecycle.SavedStateHandle
-import com.example.pokedex.model.PokemonDetailResponse
-import com.example.pokedex.model.PokemonSpritesResponse
+import com.example.pokedex.model.PokemonDetail
+import com.example.pokedex.model.PokemonSprites
 import com.example.pokedex.model.PokemonType
 import com.example.pokedex.model.PokemonTypeResponse
 import com.example.pokedex.repository.PokemonRepository
@@ -92,12 +92,12 @@ class PokemonDetailViewModelTest {
     }
 
     companion object FakeData {
-        private val bulbasaurDetail = PokemonDetailResponse(
+        private val bulbasaurDetail = PokemonDetail(
             id = 1,
             name = "bulbasaur",
             height = 7,
             weight = 69,
-            sprites = PokemonSpritesResponse(
+            sprites = PokemonSprites(
                 frontDefault = "fake_url",
             ),
             types = listOf(
