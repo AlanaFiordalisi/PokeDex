@@ -31,7 +31,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -108,12 +107,10 @@ private fun PokemonDetailScreen(
             )
         }
     ) { paddingValues ->
-        val scrollState = rememberScrollState()
         Column(
             modifier = modifier
                 .padding(paddingValues)
                 .fillMaxSize()
-                .verticalScroll(scrollState)
         ) {
             when (detailState) {
                 PokemonDetailState.Loading -> LoadingIndicator()
@@ -247,6 +244,7 @@ private fun PokemonStats(
         Column(
             modifier = modifier
                 .padding(horizontal = 8.dp)
+                .verticalScroll(rememberScrollState())
         ) {
             Row(
                 modifier = Modifier
@@ -340,7 +338,9 @@ private fun PokemonDetailPreview() {
                     height = 3,
                     weight = 2,
                     sprites = PokemonSprites(
-                        frontDefault = "fake_url"
+                        frontDefault = "fake_url",
+                        frontShiny = "fake_url",
+                        frontFemale = "fake_url",
                     ),
                     types = listOf(
                         PokemonTypeResponse(

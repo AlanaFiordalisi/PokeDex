@@ -47,7 +47,7 @@ fun LoadingIndicator(
             painter = painterResource(id = R.drawable.pokeball),
             contentDescription = stringResource(id = R.string.cd_loading),
             modifier = Modifier
-                .size(200.dp)
+                .size(100.dp)
                 .graphicsLayer {
                     rotationZ = angle
                 }
