@@ -29,14 +29,14 @@ class PokemonDetailViewModel @Inject constructor(
     fun getPokemonDetail() {
         viewModelScope.launch {
             _detailState.emit(PokemonDetailState.Loading)
-            val detail = pokemonRepository.getPokemonDetail(name)
-            if (detail != null) {
-                _detailState.emit(
-                    PokemonDetailState.Loaded(detail)
-                )
-            } else {
-                _detailState.emit(PokemonDetailState.Error)
-            }
+            pokemonRepository.getPokemonDetail(name)
+                .onSuccess { detail ->
+                    _detailState.emit(
+                        PokemonDetailState.Loaded(detail)
+                    )
+                }.onFailure {
+                    _detailState.emit(PokemonDetailState.Error)
+                }
         }
     }
 }

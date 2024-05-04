@@ -24,14 +24,14 @@ class PokemonListViewModel @Inject constructor(
     fun getPokemonList() {
         viewModelScope.launch {
             _listState.emit(PokemonListState.Loading)
-            val list = pokemonRepository.getPokemonList()
-            if (list != null) {
-                _listState.emit(
-                    PokemonListState.Loaded(list)
-                )
-            } else {
-                _listState.emit(PokemonListState.Error)
-            }
+            pokemonRepository.getPokemonList()
+                .onSuccess { list ->
+                    _listState.emit(
+                        PokemonListState.Loaded(list)
+                    )
+                }.onFailure {
+                    _listState.emit(PokemonListState.Error)
+                }
         }
     }
 }
