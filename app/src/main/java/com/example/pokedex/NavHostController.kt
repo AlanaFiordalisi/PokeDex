@@ -3,31 +3,25 @@ package com.example.pokedex
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import com.example.pokedex.screens.pokemondetail.PokemonDetailRoute
-import com.example.pokedex.screens.pokemonlist.PokemonListRoute
+import com.example.pokedex.screens.pokemondetail.navigateToPokemonDetail
+import com.example.pokedex.screens.pokemondetail.pokemonDetailScreen
+import com.example.pokedex.screens.pokemonlist.POKEMON_LIST_ROUTE
+import com.example.pokedex.screens.pokemonlist.pokemonListScreen
 
 @Composable
 fun PokeDexNavHost(
     navHostController: NavHostController
 ) {
-    NavHost(navHostController, startDestination = "pokemon_list") {
-        composable(
-            route = "pokemon_list"
-        ) {
-            PokemonListRoute(
-                onPokemonClick = { name ->
-                    navHostController.navigate("pokemon_detail/$name")
-                }
-            )
-        }
+    NavHost(
+        navController = navHostController,
+        startDestination = POKEMON_LIST_ROUTE,
+    ) {
+        pokemonListScreen(
+            onPokemonClick = navHostController::navigateToPokemonDetail
+        )
 
-        composable(
-            route = "pokemon_detail/{name}"
-        ) {
-            PokemonDetailRoute(
-                onBackClick = navHostController::popBackStack
-            )
-        }
+        pokemonDetailScreen(
+            onBackClick = navHostController::popBackStack
+        )
     }
 }
