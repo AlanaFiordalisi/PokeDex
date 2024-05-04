@@ -14,7 +14,7 @@ class PokemonListViewModel @Inject constructor(
     private val pokemonRepository: PokemonRepository
 ): ViewModel() {
 
-    private var _listState = MutableStateFlow<PokemonListState>(PokemonListState.Loading)
+    private val _listState = MutableStateFlow<PokemonListState>(PokemonListState.Loading)
     val listState: StateFlow<PokemonListState> = _listState
 
     init {
