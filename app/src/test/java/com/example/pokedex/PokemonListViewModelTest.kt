@@ -2,11 +2,9 @@ package com.example.pokedex
 
 import com.example.pokedex.model.PokemonList
 import com.example.pokedex.model.PokemonListItem
-import com.example.pokedex.repository.PokemonRepository
 import com.example.pokedex.screens.pokemonlist.PokemonListState
 import com.example.pokedex.screens.pokemonlist.PokemonListViewModel
-import io.mockk.coEvery
-import io.mockk.mockk
+import com.example.pokedex.test.FakePokemonRepository
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
@@ -21,17 +19,17 @@ class PokemonListViewModelTest {
     @get:Rule
     val dispatcherRule = MainDispatcherRule()
 
-    private lateinit var pokemonRepository: PokemonRepository
+    private lateinit var pokemonRepository: FakePokemonRepository
 
     @Before
     fun setUp() {
-        pokemonRepository = mockk(relaxed = true)
+        pokemonRepository = FakePokemonRepository()
     }
 
     @Test
     fun `getPokemonList sets state to Loaded on success`() = runTest {
         // arrange
-        coEvery { pokemonRepository.getPokemonList() } returns listResponse
+        pokemonRepository.setPokemonList(fakePokemonList)
 
         // act
         val viewModel = PokemonListViewModel(pokemonRepository)
@@ -39,7 +37,7 @@ class PokemonListViewModelTest {
         // assert
         assertEquals(PokemonListState.Loading, viewModel.listState.first())
         assertEquals(
-            PokemonListState.Loaded(listResponse),
+            PokemonListState.Loaded(fakePokemonList),
             viewModel.listState.drop(1).first()
         )
     }
@@ -47,7 +45,7 @@ class PokemonListViewModelTest {
     @Test
     fun `getPokemonList sets state to Error on failure`() = runTest {
         // arrange
-        coEvery { pokemonRepository.getPokemonList() } returns null
+        pokemonRepository.setPokemonList(null) // not strictly necessary to call this, but it's explicit and quick
 
         // act
         val viewModel = PokemonListViewModel(pokemonRepository)
@@ -58,7 +56,7 @@ class PokemonListViewModelTest {
     }
 
     companion object FakeData {
-        private val listResponse = PokemonList(
+        private val fakePokemonList = PokemonList(
             results = listOf(
                 PokemonListItem(
                     name = "bulbasaur",
@@ -71,7 +69,7 @@ class PokemonListViewModelTest {
                 PokemonListItem(
                     name = "blastoise",
                     url = "fake_url"
-                )
+                ),
             )
         )
     }
